@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types'
 
-function Header({text}) {
+function Header({text, bgColor, textColor}) {
+    const headerStyle = {
+        backgroundColor: bgColor,
+        color:textColor
+    }
+
   return (
-    <header>
+    <header style={headerStyle}>
         <div className="container">
-            <h2>Feedback UI</h2>
             <h3>{text}</h3>
         </div>
     </header>
@@ -12,11 +16,15 @@ function Header({text}) {
 }
 
 Header.defaultProps = {
-    text: 'hi guys'
+    text: 'Feedback UI',
+    bgColor: 'rgba(0,0,0,0.4)',
+    textColor: '#ff6a95'
 }
 
 Header.propTypes = {
-    text: PropTypes.string
+    text: PropTypes.string,
+    bgColor: PropTypes.string,
+    textColor: PropTypes.string
 }
 
 export default Header
