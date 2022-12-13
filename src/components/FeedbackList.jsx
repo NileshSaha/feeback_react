@@ -1,14 +1,18 @@
 import FeedbackItem from './FeedbackItem'
 import PropTypes from 'prop-types'
 
-function FeedbackList({ feedback }) {
+function FeedbackList({ feedback, handleDelete }) {
   if (!feedback || feedback.length === 0) {
     return <p>No Feedbacks are there</p>
   }
   return (
     <div className='feedback-list'>
       {feedback.map((element) => (
-        <FeedbackItem key={element.id} feedback={element} />
+        <FeedbackItem
+          key={element.id}
+          feedback={element}
+          handleDelete={handleDelete}
+        />
       ))}
     </div>
   )
