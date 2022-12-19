@@ -15,7 +15,7 @@ function FeedbackItem({ feedback, handleDelete }) {
 
 FeedbackItem.defaultProps = {
   feedback: {
-    id: 0,
+    id: '',
     rating: 0,
     text: '',
   },
