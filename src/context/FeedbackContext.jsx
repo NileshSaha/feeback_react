@@ -14,7 +14,7 @@ export const FeedbackProvider = ({ children }) => {
 
   //Fetch feedback
   const fetchFeedback = async () => {
-    const response = await fetch(`http://localhost:5000/feedback?_sort=id&_order=desc`)
+    const response = await fetch(`/feedback?_sort=id&_order=desc`)
     const data = await response.json()
 
     setFeedback(data)
@@ -27,15 +27,29 @@ export const FeedbackProvider = ({ children }) => {
   })
 
   // Add feedback
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4()
-    setFeedback([newFeedback, ...feedback])
+  const addFeedback = async (newFeedback) => {
+    setIsLoading(true)
+    const response = await fetch(`/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(newFeedback)
+    })
+    const item = await response.json()
+    setFeedback([item, ...feedback])
+    setIsLoading(false)
   }
 
   // Delete feedback
-  const deleteFeedback = (id) => {
+  const deleteFeedback = async (id) => {
     if (window.confirm('Are you want to delete?')) {
+      setIsLoading(true)
+      await fetch(`/feedback/${id}`, {
+        method:'DELETE',
+      })
       setFeedback(feedback.filter((element) => element.id !== id))
+      setIsLoading(false)
     }
   }
 
@@ -48,8 +62,18 @@ export const FeedbackProvider = ({ children }) => {
   }
 
   // Update feedback
-  const updateFeedback = (item) => {
-    setFeedback(feedback.map((feedback) => (item.id === feedback.id ?  item : feedback)))
+  const updateFeedback = async (item) => {
+    setIsLoading(true)
+    const response = await fetch(`/feedback/${item.id}`, {
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify({rating:item.rating, text:item.text})
+    })
+    const data = await response.json()
+    setFeedback(feedback.map((feedback) => (item.id === feedback.id ?  data : feedback)))
+    setIsLoading(false)
   }
   
   return (
